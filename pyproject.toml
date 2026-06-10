@@ -34,9 +34,9 @@ dependencies = [
 image = ["img2pdf>=0.3.4"]
 
 [project.urls]
-Homepage = "https://github.com/pdfarranger/pdfarranger"
-Repository = "https://github.com/pdfarranger/pdfarranger"
-Issues = "https://github.com/pdfarranger/pdfarranger/issues"
+Homepage = "https://github.com/HakimTaoufik/pdfarranger"
+Repository = "https://github.com/HakimTaoufik/pdfarranger"
+Issues = "https://github.com/HakimTaoufik/pdfarranger/issues"
 
 [project.scripts]
 pdfarranger = "pdfarranger.pdfarranger:main"
