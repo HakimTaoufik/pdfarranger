@@ -20,11 +20,19 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
+"""Setuptools build hooks for PDF Arranger.
+
+Project metadata, dependencies, entry points, and static data files live in
+pyproject.toml. This file is intentionally kept only for custom build steps that
+are not yet represented declaratively: compiling gettext translations and adding
+icon files recursively.
+"""
+
 from setuptools import Command
 from setuptools import setup
 from setuptools import __version__ as setuptools_version
 
-# support distros that ship old setuptools
+# Support distros that ship old setuptools.
 setuptools_version = tuple(int(n) for n in setuptools_version.split('.')[:2])
 if setuptools_version < (65, 2):
     from distutils.command.build import build
@@ -35,13 +43,6 @@ from os.path import join
 import glob
 import os
 import subprocess
-
-data_files = [
-    ('share/applications', ['data/com.github.jeromerobert.pdfarranger.desktop']),
-    ('share/pdfarranger', ['data/pdfarranger.ui', 'data/menu.ui']),
-    ('share/man/man1', ['doc/pdfarranger.1']),
-    ('share/metainfo', ['data/com.github.jeromerobert.pdfarranger.metainfo.xml']),
-]
 
 
 def _dir_to_data_files(src_dir, target_dir):
@@ -54,7 +55,7 @@ def _dir_to_data_files(src_dir, target_dir):
 
 
 def _data_files(command):
-    """Return the data_files of a command"""
+    """Return the data_files of a command."""
     data_files = command.distribution.data_files
     if data_files is None:
         data_files = []
@@ -103,26 +104,9 @@ class build_icons(Command):
 build.sub_commands += [(x, lambda _: True) for x in ["build_i18n", "build_icons"]]
 
 setup(
-    name='pdfarranger',
-    version='1.14.0',
-    author='Jerome Robert',
-    author_email='jeromerobert@gmx.com',
-    description='A simple application for PDF Merging, Rearranging, and Splitting',
-    url='https://github.com/pdfarranger/pdfarranger',
-    license='GNU GPL-3',
-    packages=['pdfarranger'],
-    data_files=data_files,
-    zip_safe=False,
     cmdclass={
         "build": build,
         "build_i18n": build_i18n,
         "build_icons": build_icons,
-    },
-    entry_points={
-        'console_scripts': ['pdfarranger=pdfarranger.pdfarranger:main']
-    },
-    install_requires=['pikepdf>=6','python-dateutil>=2.4.0', 'packaging'],
-    extras_require={
-        'image': ['img2pdf>=0.3.4'],
     },
 )
