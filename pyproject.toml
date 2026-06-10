@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=65.2", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdfarranger"
+version = "1.14.0"
+description = "A simple application for PDF merging, rearranging, and splitting"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "GPL-3.0-or-later" }
+authors = [
+  { name = "Jerome Robert", email = "jeromerobert@gmx.com" },
+]
+keywords = ["pdf", "gtk", "pikepdf", "merge", "split", "rearrange"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: X11 Applications :: GTK",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Office/Business",
+  "Topic :: Utilities",
+]
+dependencies = [
+  "pikepdf>=6",
+  "python-dateutil>=2.4.0",
+  "packaging",
+]
+
+[project.optional-dependencies]
+image = ["img2pdf>=0.3.4"]
+
+[project.urls]
+Homepage = "https://github.com/pdfarranger/pdfarranger"
+Repository = "https://github.com/pdfarranger/pdfarranger"
+Issues = "https://github.com/pdfarranger/pdfarranger/issues"
+
+[project.scripts]
+pdfarranger = "pdfarranger.pdfarranger:main"
+
+[tool.setuptools]
+packages = ["pdfarranger"]
+zip-safe = false
+
+[tool.setuptools.data-files]
+"share/applications" = ["data/com.github.jeromerobert.pdfarranger.desktop"]
+"share/pdfarranger" = ["data/pdfarranger.ui", "data/menu.ui"]
+"share/man/man1" = ["doc/pdfarranger.1"]
+"share/metainfo" = ["data/com.github.jeromerobert.pdfarranger.metainfo.xml"]
+
+[dependency-groups]
+dev = [
+  "coverage>=7",
+]
