@@ -101,7 +101,7 @@ setup above installs it through the `image` extra.
 Recommended local development setup:
 
 ```
-git clone https://github.com/pdfarranger/pdfarranger.git
+git clone https://github.com/HakimTaoufik/pdfarranger.git
 cd pdfarranger
 uv venv --system-site-packages
 uv sync --extra image --group dev
