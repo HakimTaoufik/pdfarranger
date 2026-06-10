@@ -32,7 +32,14 @@ For more info see [User Manual](https://github.com/pdfarranger/pdfarranger/wiki/
 ## Install from source
 
 *PDF Arranger* requires [pikepdf](https://github.com/pikepdf/pikepdf) >= 6.
-Pip will automatically install the latest pikepdf if there is no pikepdf installed on the system.
+Python dependencies are declared in [pyproject.toml](pyproject.toml) and can be
+installed with [uv](https://docs.astral.sh/uv/).
+
+PDF Arranger also uses native desktop libraries through PyGObject: GTK 3,
+Poppler GLib, libhandy, gettext, and Cairo. These are not pure Python packages,
+so they still need to be provided by the operating system until the app is
+shipped through a full application bundle such as Flatpak, AppImage, or a native
+Windows/macOS package.
 
 **On Debian-based distributions**
 
@@ -45,7 +52,7 @@ sudo apt-get install python3-pip python3-wheel python3-gi python3-gi-cairo \
 **On Arch Linux**
 
 ```
-sudo pacman -S poppler-glib python-pip python-gobject gtk3 python-cairo libhandy
+sudo pacman -S --needed gtk3 poppler-glib python-gobject python-cairo libhandy gettext
 ```
 
 **On Fedora**
@@ -63,34 +70,42 @@ sudo pkg install devel/gettext devel/py-gobject3 devel/py-pip \
     x11-toolkits/libhandy
 ```
 
-**Install PDF Arranger in a virtual environment**
+**Install PDF Arranger with uv**
 
-Create a virtual environment in `/home/user/myenv`
-```
-python3 -m venv --system-site-packages ~/myenv
-```
-
-Install PDF Arranger
+Create the virtual environment with access to system site packages so the venv
+can see the OS-provided GTK/Poppler bindings:
 
 ```
-~/myenv/bin/pip3 install --upgrade https://github.com/pdfarranger/pdfarranger/zipball/main
+uv venv --system-site-packages
+uv sync --extra image --group dev
 ```
 
-Optionally create a symlink so that the app can be started from anywhere in a terminal with `pdfarranger`
+Run PDF Arranger:
 
 ```
-sudo ln -s ~/myenv/bin/pdfarranger /usr/local/bin/pdfarranger
+uv run pdfarranger
 ```
 
-In addition, *PDF Arranger* supports image file import if [img2pdf](https://gitlab.mister-muffin.de/josch/img2pdf) is installed.
+Alternatively, run the module directly:
+
+```
+uv run python -m pdfarranger
+```
+
+In addition, *PDF Arranger* supports image file import if
+[img2pdf](https://gitlab.mister-muffin.de/josch/img2pdf) is installed. The uv
+setup above installs it through the `image` extra.
 
 ## For developers
+
+Recommended local development setup:
 
 ```
 git clone https://github.com/pdfarranger/pdfarranger.git
 cd pdfarranger
-./setup.py build
-python3 -m pdfarranger
+uv venv --system-site-packages
+uv sync --extra image --group dev
+uv run python -m pdfarranger
 ```
 
 For testing see [TESTING.md](TESTING.md).
@@ -120,7 +135,7 @@ you would contribute translations by following these steps:
 *   If possible, test your translation to see it in context (see [For developers](#for-developers))
 *   Create a new pull request with your changes to the main branch
 
-If you are editing mnemonics accelerators (letters preceded by an underscore), here are some additional guidelines. However, if you have no idea what this means, don't worry about it.
+If you are editing mnemonics accelerators (letters preceded by underscore), here are some additional guidelines. However, if you have no idea what this means, don't worry about it.
 Try to follow these rules by priority order:
 
 *   be consistent with other GTK/GNOME software
